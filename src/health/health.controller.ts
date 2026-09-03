@@ -1,9 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Repository } from 'typeorm';
 import { RedisService } from '../common/redis/redis.service';
 import { Sound } from '../sounds/entities/sound.entity';
 
+@ApiTags('health')
 @Controller('health')
 export class HealthController {
   constructor(
@@ -11,6 +13,8 @@ export class HealthController {
     private readonly redisService: RedisService,
   ) {}
 
+  @ApiOperation({ summary: 'PostgreSQL / Redis 연결 상태 점검' })
+  @ApiOkResponse({ description: 'status: ok | degraded' })
   @Get()
   async check() {
     const [dbOk, redisOk] = await Promise.all([

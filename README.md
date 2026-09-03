@@ -63,6 +63,20 @@ npm run start:dev
 
 앱은 기본적으로 `http://localhost:3000`에서 기동됩니다. (`synchronize: true`로 최초 기동 시 `sounds` 테이블이 자동 생성됩니다 — PoC 편의 목적이며 운영 환경에서는 마이그레이션 사용을 권장합니다.)
 
+### Swagger(OpenAPI) 문서
+
+기동 후 아래 주소에서 API 문서를 확인할 수 있습니다.
+
+```
+http://localhost:3000/api-docs
+```
+
+- `nest-cli.json`의 `@nestjs/swagger` 컴파일러 플러그인이 DTO/엔티티의 class-validator 데코레이터와 TS 타입을
+  분석해 `@ApiProperty`를 자동 생성하므로, 대부분의 요청/응답 스키마는 별도 수정 없이 문서에 반영됩니다.
+- `AI 캐릭터 챗 / 추천` API는 SSE(text/event-stream) 스트리밍이라 Swagger UI의 "Try it out"으로는 스트리밍
+  응답을 온전히 확인하기 어렵습니다. 스키마 참고용으로만 사용하고, 실제 스트리밍 테스트는 `curl -N` 또는
+  `fetch` + `ReadableStream`을 사용하세요.
+
 샘플 데이터 시드:
 
 ```bash
