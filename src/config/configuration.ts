@@ -25,6 +25,11 @@ export interface AppConfig {
     apiKey: string;
     model: string;
   };
+  /** 모아리 AI 캐릭터 챗 전용 - 실제 OpenAI API(openai SDK) 연동 설정 */
+  openai: {
+    apiKey: string;
+    model: string;
+  };
 }
 
 export default (): AppConfig => ({
@@ -56,5 +61,9 @@ export default (): AppConfig => ({
     baseUrl: process.env.AI_PROVIDER_BASE_URL ?? 'https://api.openai.com/v1',
     apiKey: process.env.AI_PROVIDER_API_KEY ?? '',
     model: process.env.AI_PROVIDER_MODEL ?? 'gpt-4o-mini',
+  },
+  openai: {
+    apiKey: process.env.OPENAI_API_KEY ?? '',
+    model: process.env.OPENAI_MODEL ?? 'gpt-4o-mini',
   },
 });
