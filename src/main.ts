@@ -1,14 +1,16 @@
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { join } from 'path';
 import { AppModule } from './app.module';
 import { AppConfig } from './config/configuration';
 
 const SWAGGER_PATH = 'api-docs';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { cors: true });
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -18,6 +20,9 @@ async function bootstrap() {
     }),
   );
 
+  // public/ 폴더를 정적 파일로 서빙 (모아리 챗 테스트용 웹 UI: /chat.html)
+  app.useStaticAssets(join(__dirname, '..', 'public'));
+
   const configService = app.get(ConfigService<AppConfig, true>);
   const port = configService.get('port', { infer: true });
 
@@ -26,6 +31,7 @@ async function bootstrap() {
   await app.listen(port);
   Logger.log(`🚀 sound-flow-backend listening on http://localhost:${port}`, 'Bootstrap');
   Logger.log(`📘 Swagger UI: http://localhost:${port}/${SWAGGER_PATH}`, 'Bootstrap');
+  Logger.log(`💬 모아리 챗 테스트 UI: http://localhost:${port}/chat.html`, 'Bootstrap');
 }
 
 /**
