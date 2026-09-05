@@ -7,6 +7,7 @@ import { RedisModule } from './common/redis/redis.module';
 import configuration, { AppConfig } from './config/configuration';
 import { typeOrmConfigFactory } from './config/typeorm.config';
 import { HealthModule } from './health/health.module';
+import { MoariModule } from './moari/moari.module';
 import { SoundsModule } from './sounds/sounds.module';
 
 @Module({
@@ -25,6 +26,7 @@ import { SoundsModule } from './sounds/sounds.module';
     RedisModule,
     SoundsModule,
     AiModule,
+    MoariModule,
     HealthModule,
   ],
 })
